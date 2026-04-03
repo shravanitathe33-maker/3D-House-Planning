@@ -3,27 +3,834 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D House Planning Form</title>
+    <title>3D House Planning - Premium Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated Background Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            letter-spacing: -1px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+            align-items: start;
+        }
+
+        /* Left Side - Input Section */
+        .input-section {
+            animation: slideInLeft 0.8s ease 0.2s both;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="number"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .input-unit {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .slider-container {
+            margin-bottom: 20px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Right Side - Preview Section */
+        .preview-section {
+            animation: slideInRight 0.8s ease 0.2s both;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .preview-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(-100%, -100%) rotate(45deg); }
+            100% { transform: translate(100%, 100%) rotate(45deg); }
+        }
+
+        .preview-3d {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 30px 0;
+            z-index: 1;
+        }
+
+        .house-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate3d 6s linear infinite;
+        }
+
+        @keyframes rotate3d {
+            from { transform: rotateX(10deg) rotateY(0deg); }
+            to { transform: rotateX(10deg) rotateY(360deg); }
+        }
+
+        .house-base {
+            width: 100px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .house-roof {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 40px solid #ff6b6b;
+            position: absolute;
+            left: 50%;
+            top: 35%;
+            transform: translateX(-50%);
+        }
+
+        .preview-info {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+        }
+
+        .preview-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .preview-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        /* Bottom Action Buttons */
+        .action-section {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideUp 0.8s ease 0.4s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(17, 153, 142, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card, .preview-card {
+                padding: 20px;
+            }
+
+            .action-section {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            color: white;
+            animation: slideUp 0.3s;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
-    <h1>3D House Planning Parameters</h1>
-    <form>
-        <label for="length">Length (m):</label>
-        <input type="number" id="length" name="length" required><br><br>
+    <!-- Animated Particles Background -->
+    <div class="particles" id="particles"></div>
 
-        <label for="width">Width (m):</label>
-        <input type="number" id="width" name="width" required><br><br>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏗️ 3D House Planner</h1>
+            <p>Design Your Dream Home with Advanced Tools</p>
+        </div>
 
-        <label for="height">Height (m):</label>
-        <input type="number" id="height" name="height" required><br><br>
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Left: Input Section -->
+            <div class="input-section">
+                <!-- Project Details Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">📋</span>
+                        Project Details
+                    </div>
+                    <div class="input-group">
+                        <label>Project Name</label>
+                        <input type="text" id="projectName" placeholder="e.g., Modern Villa 2026">
+                    </div>
+                    <div class="input-group">
+                        <label>Location</label>
+                        <input type="text" id="location" placeholder="City, Country">
+                    </div>
+                    <div class="input-group">
+                        <label>Start Date</label>
+                        <input type="date" id="startDate">
+                    </div>
+                </div>
 
-        <label for="rooms">Number of Rooms:</label>
-        <input type="number" id="rooms" name="rooms" required><br><br>
+                <!-- Dimensions Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">📏</span>
+                        House Dimensions
+                    </div>
+                    <div class="input-group">
+                        <div class="slider-label">
+                            <span>Length</span>
+                            <span id="lengthVal">50</span>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="range" id="length" min="10" max="200" value="50">
+                            <div class="input-unit">ft</div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="slider-label">
+                            <span>Width</span>
+                            <span id="widthVal">40</span>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="range" id="width" min="10" max="200" value="40">
+                            <div class="input-unit">ft</div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="slider-label">
+                            <span>Height</span>
+                            <span id="heightVal">30</span>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="range" id="height" min="10" max="100" value="30">
+                            <div class="input-unit">ft</div>
+                        </div>
+                    </div>
+                </div>
 
-        <label for="floors">Number of Floors:</label>
-        <input type="number" id="floors" name="floors" required><br><br>
+                <!-- Rooms Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">🚪</span>
+                        Rooms & Features
+                    </div>
+                    <div class="input-group">
+                        <label>Bedrooms</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="bedrooms" value="3" min="0" max="20">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Bathrooms</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="bathrooms" value="2" min="0" max="20">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Floors</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="floors" value="2" min="1" max="10">
+                        </div>
+                    </div>
+                </div>
 
-        <input type="submit" value="Submit">
-    </form>
+                <!-- Design Style Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">🎨</span>
+                        Design Style
+                    </div>
+                    <div class="input-group">
+                        <label>Architectural Style</label>
+                        <select id="style">
+                            <option value="modern">🏢 Modern</option>
+                            <option value="contemporary">🌆 Contemporary</option>
+                            <option value="traditional">🏛️ Traditional</option>
+                            <option value="minimalist">⬜ Minimalist</option>
+                            <option value="farmhouse">🌾 Farmhouse</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Exterior Material</label>
+                        <select id="material">
+                            <option value="brick">🧱 Brick</option>
+                            <option value="wood">🪵 Wood</option>
+                            <option value="concrete">🏭 Concrete</option>
+                            <option value="stone">⛰️ Stone</option>
+                            <option value="metal">🔧 Metal</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Preview Section -->
+            <div class="preview-section">
+                <div class="preview-card">
+                    <div class="preview-3d">
+                        <div class="house-3d">
+                            <div class="house-roof"></div>
+                            <div class="house-base"></div>
+                        </div>
+                    </div>
+                    <div class="preview-info">
+                        <h3 id="previewTitle">Your Dream Home</h3>
+                        <div class="preview-stats">
+                            <div class="stat-box">
+                                <div class="stat-label">Total Area</div>
+                                <div class="stat-value" id="areaPreview">2000 ft²</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Rooms</div>
+                                <div class="stat-value" id="roomsPreview">5</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Floors</div>
+                                <div class="stat-value" id="floorsPreview">2</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Style</div>
+                                <div class="stat-value" id="stylePreview">Modern</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-section">
+            <button class="btn btn-secondary" onclick="resetForm()">↺ Reset</button>
+            <button class="btn btn-primary" onclick="saveDraft()">💾 Save Draft</button>
+            <button class="btn btn-success" onclick="generateModel()">🚀 Generate 3D Model</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>✅ Success!</h2>
+            <p id="modalMessage">Your 3D model is being generated...</p>
+            <button class="btn btn-primary" style="margin-top: 20px;" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Generate random particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Update preview values
+        function updatePreview() {
+            const length = document.getElementById('length').value;
+            const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            const bedrooms = document.getElementById('bedrooms').value;
+            const bathrooms = document.getElementById('bathrooms').value;
+            const floors = document.getElementById('floors').value;
+            const style = document.getElementById('style').value;
+            const projectName = document.getElementById('projectName').value || 'Your Dream Home';
+
+            // Update slider values
+            document.getElementById('lengthVal').textContent = length;
+            document.getElementById('widthVal').textContent = width;
+            document.getElementById('heightVal').textContent = height;
+
+            // Calculate area
+            const area = (length * width).toFixed(0);
+
+            // Update preview stats
+            document.getElementById('areaPreview').textContent = area + ' ft²';
+            document.getElementById('roomsPreview').textContent = (parseInt(bedrooms) + parseInt(bathrooms));
+            document.getElementById('floorsPreview').textContent = floors;
+            document.getElementById('stylePreview').textContent = style.charAt(0).toUpperCase() + style.slice(1);
+            document.getElementById('previewTitle').textContent = projectName;
+        }
+
+        // Show modal
+        function showModal(message) {
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('successModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('projectName').value = '';
+            document.getElementById('location').value = '';
+            document.getElementById('length').value = 50;
+            document.getElementById('width').value = 40;
+            document.getElementById('height').value = 30;
+            document.getElementById('bedrooms').value = 3;
+            document.getElementById('bathrooms').value = 2;
+            document.getElementById('floors').value = 2;
+            updatePreview();
+        }
+
+        // Save draft
+        function saveDraft() {
+            const data = {
+                projectName: document.getElementById('projectName').value,
+                location: document.getElementById('location').value,
+                length: document.getElementById('length').value,
+                width: document.getElementById('width').value,
+                height: document.getElementById('height').value,
+                bedrooms: document.getElementById('bedrooms').value,
+                bathrooms: document.getElementById('bathrooms').value,
+                floors: document.getElementById('floors').value,
+                style: document.getElementById('style').value,
+                material: document.getElementById('material').value
+            };
+            localStorage.setItem('housePlanDraft', JSON.stringify(data));
+            showModal('Draft saved successfully to your browser!');
+        }
+
+        // Generate 3D model
+        function generateModel() {
+            const projectName = document.getElementById('projectName').value || 'Unnamed Project';
+            showModal(`🏠 Generating 3D Model for: ${projectName}\n\nProcessing your design...`);
+        }
+
+        // Event listeners
+        document.getElementById('length').addEventListener('input', updatePreview);
+        document.getElementById('width').addEventListener('input', updatePreview);
+        document.getElementById('height').addEventListener('input', updatePreview);
+        document.getElementById('bedrooms').addEventListener('input', updatePreview);
+        document.getElementById('bathrooms').addEventListener('input', updatePreview);
+        document.getElementById('floors').addEventListener('input', updatePreview);
+        document.getElementById('style').addEventListener('change', updatePreview);
+        document.getElementById('projectName').addEventListener('input', updatePreview);
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('successModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // Initialize
+        createParticles();
+        updatePreview();
+    </script>
 </body>
 </html>
